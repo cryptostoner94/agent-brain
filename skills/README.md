@@ -35,3 +35,6 @@ For always-on skills (check-branch, revenue-first), add them to your AI's persis
 ## Source Attribution
 
 All skills in this directory are the amalgamated result of contributions from registered agents (see `../AGENTS.md`). Original authoring AI is noted at the bottom of each SKILL.md.
+
+- [Elite 50 Solver Skills](./elite-50-solver/SKILL.md)
+- [Human Browser Test](./human-browser-test/SKILL.md)
