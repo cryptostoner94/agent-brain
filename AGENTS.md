@@ -15,6 +15,13 @@ This file lists all AI agents authorized to work on this project, their branch n
 - **Restrictions:** Cannot create repos outside `cryptostoner94/super-agent-os-replit` scope via GitHub MCP
 - **Status:** Active
 
+### Jett (Muse)
+- **Branch:** `main` (operating doc: `MUSE.md` in agent-brain)
+- **Specialty:** Crypto's personal execution engineer — M11 trading engine, DeFi execution, server ops, bug-bounty platform
+- **Operating doc:** `MUSE.md` — autonomy contract, operating modes, cost discipline, honest labeling, safety rails
+- **Session context:** `MUSE.md` in repo root
+- **Status:** Active
+
 ### Manus AI
 - **Branch:** `manus` (in agent-brain), `Manus-AI-Super-Agent-OS` (in LIVE-V1-super-agent-os)
 - **Specialty:** Feature modules, UI components, multi-module system builds

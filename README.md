@@ -28,6 +28,7 @@ If two AI agents have a skill that does the same job (more than 79% topic overla
 ```
 main branch
 ├── README.md              ← You are here
+├── MUSE.md                ← Jett's operating system: autonomy contract, modes, safety rails
 ├── BRANCHES.md            ← Index of all active branches, PRs, Actions
 ├── AGENTS.md              ← Registered AI agents + their branch names
 ├── MERGE-RULES.md         ← How skills graduate from branch → main
