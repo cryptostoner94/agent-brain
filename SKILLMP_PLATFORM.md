@@ -15,6 +15,7 @@ A portable, AI-agnostic platform that fuses **intent-aware skill routing**, **pr
 
 ## Portable tools (`tools/`, stdlib-only Python)
 
+- `bds.py` — **ONE-COMMAND LAUNCHER**: `bds start [dir]` initializes the project, auto-seeds the pipeline cards, and starts the live board server. `bds status` / `bds stop` too.
 - `pmkanban.py` — the board CLI (state → TODO/KANBAN/PROGRESS/LEDGER/SNAPSHOT, evidence gates)
 - `intent-router.py` — OpenRouter-faithful skill router (classify/rank/min-score/tier/live/create-cards)
 - `research-stack.py` — live per-stage skill research from SkillsMP
@@ -29,7 +30,12 @@ A portable, AI-agnostic platform that fuses **intent-aware skill routing**, **pr
    ```bash
    git clone https://github.com/cryptostoner94/agent-brain.git
    for f in agent-brain/tools/*.py; do chmod +x "$f"; ln -sf "$(realpath $f)" /usr/local/bin/$(basename "$f" .py); done
-   # in a project: pmkanban init | intent-router --intent | intent-router --create-cards | boardserve | pmaudit
+   ```
+   **Launch everything in ONE command** — `bds start` (init + seed + serve):
+   ```bash
+   cd <your-project>
+   bds start --intent "MEV resolver profit"   # creates project, seeds pipeline, starts board on :8181
+   # open http://<host>:8181/ on desktop or phone · audit with pmaudit
    ```
 3. **Always-on** — inject `one-go-orchestrated-pm` + `pm-kanban-todo` + `genuine-audit` (mindset + visible board + not-lie) into the agent's persistent instructions so every session starts with the visible board and honest-execution posture.
 
