@@ -24,27 +24,14 @@ A portable, AI-agnostic platform that fuses **intent-aware skill routing**, **pr
 
 ## How to inject into ANY agent or project
 
-### Option A — copy the skill content into the agent's prompt
-For any instruction-following AI: copy the relevant `skills/<name>/SKILL.md` into its system prompt or instruction set IA-aggressive. Plain text, no AI-specific format.
-
-### Option B — install the tools on a machine
-```bash
-for f in /path/to/agent-brain/tools/*.py; do
-  chmod +x "$f"; ln -sf "$(realpath $f)" /usr/local/bin/$(basename "$f" .py)
-done
-cp /path/to/agent-brain/tools/board.html /root/pm-boilerplate/web/ 2>/dev/null || true
-```
-Then in any project:
-```bash
-pmkanban init --project "my project" --doc docs/SPEC.md   # authoritative docs, no assumptions
-intent-router --intent "profit via analyzer on Base" --repo .   # route skills
-intent-router --create-cards .     # auto-seed pipeline onto the visible board
-boardserve --port 8181 --proj .    # open http://<host>:8181/ on desktop or phone
-pmaudit --proj .                   # audit DONE claims genuinely
-```
-
-### Option C — inject at session start (always-on)
-Add `one-go-orchestrated-pm` (mindset) + `pm-kanban-todo` (board) + `genuine-audit` (not-lie) to the agent's persistent instructions so every session starts with the visible board and the honest-execution posture.
+1. **Copy skills** — copy the relevant `skills/<name>/SKILL.md` content into the agent's system prompt / instruction set. Plain text, no AI-specific format. Per-agent selection: see `TRAINING.md` (coding / non-coding / research / audit loads).
+2. **Install tools** — `git clone https://github.com/cryptostoner94/agent-brain.git` then symlink `tools/*.py` to `/usr/local/bin`. Uses in any project: `init` → `route` → `seed` → `serve` → `audit`.
+   ```bash
+   git clone https://github.com/cryptostoner94/agent-brain.git
+   for f in agent-brain/tools/*.py; do chmod +x "$f"; ln -sf "$(realpath $f)" /usr/local/bin/$(basename "$f" .py); done
+   # in a project: pmkanban init | intent-router --intent | intent-router --create-cards | boardserve | pmaudit
+   ```
+3. **Always-on** — inject `one-go-orchestrated-pm` + `pm-kanban-todo` + `genuine-audit` (mindset + visible board + not-lie) into the agent's persistent instructions so every session starts with the visible board and honest-execution posture.
 
 ## How it works together
 
