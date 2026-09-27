@@ -12,7 +12,7 @@ Load these (in this order) into the system prompt:
 4. **genuine-audit** — after delivery, audit claims genuinely (SUPPORTED/REFUTED/UNVERIFIED).
 Also useful: `verification-and-proof`, `complex-coding-lifecycle`, `qa-review`, `revenue-first`.
 
-Invocation card: `bds start` (init → seed → serve on :8181) → `audit` (pmaudit).
+Invocation card: `bds start` (init → seed → serve ALL visuals on a free port) → `audit` (pmaudit).
 
 ### B. Non-coding / day-to-day multi-task agent (scheduling, docs, follow-ups)
 Load these:

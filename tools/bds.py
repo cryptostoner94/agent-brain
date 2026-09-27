@@ -9,7 +9,7 @@ bds — one-command launcher for the visible SkillMP board platform.
   4. print the URL + how to audit
 
 Usage:
-  bds start [dir] [--port 8181] [--intent "our goal"]   << the main command
+  bds start [dir] [--port 16888] [--intent "our goal"]   << the main command
   bds status [dir]       show board state + audit DONE claims
   bds stop                stop the board server
 
@@ -121,7 +121,7 @@ def main():
     ap = argparse.ArgumentParser(prog="bds")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("start", help="init + seed + serve (do everything)")
-    p.add_argument("dir", nargs="?", default=os.getcwd()); p.add_argument("--port", type=int, default=8181); p.add_argument("--intent")
+    p.add_argument("dir", nargs="?", default=os.getcwd()); p.add_argument("--port", type=int, default=16888); p.add_argument("--intent")
     p.set_defaults(fn=_start)
     p = sub.add_parser("status"); p.add_argument("dir", nargs="?", default=os.getcwd()); p.set_defaults(fn=_status)
     p = sub.add_parser("stop"); p.add_argument("dir", nargs="?", default=os.getcwd()); p.set_defaults(fn=_stop)

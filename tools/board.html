@@ -40,9 +40,17 @@
 <body>
 <h1>📋 Intents→Skills Pipeline <span id="project">(loading…)</span></h1>
 <div id="meta"></div>
+<nav id="tabs">
+  <button class="tab active" data-view="board">Board</button>
+  <button class="tab" data-view="todo">Todo</button>
+  <button class="tab" data-view="progress">Progress</button>
+  <button class="tab" data-view="ledger">Ledger</button>
+  <button class="tab" data-view="snapshot">Snapshot</button>
+</nav>
 <div class="bar-wrap"><div class="bar"><div id="fill"></div></div><div class="lbl"><span id="pct">0%</span><span id="rem"></span></div></div>
 <div class="board" id="board"></div>
 <div id="digest" class="digest"></div>
+<div id="viewtext" style="white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:12px;line-height:1.5;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px;display:none"></div>
 <div id="toast"></div>
 <script>
 const ENDPOINT = location.search=== '?static' ? null : '/api/board';
@@ -86,6 +94,27 @@ function render(data){
     " &nbsp;·&nbsp; <b>Evidence:</b> "+(meta.evidence||0)+" file(s)";
 }
 function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.style.display="block"; setTimeout(()=>t.style.display="none",1800);}
+// ---- tabs: switch between visible views (board/todo/progress/ledger/snapshot) ----
+const tabs=document.querySelectorAll(".tab");
+tabs.forEach(t=>t.addEventListener("click",()=>{
+  tabs.forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  const v=t.dataset.view;
+  document.getElementById("viewtext").style.display = v==="board"?"none":"block";
+  document.getElementById("board").style.display = v==="board"?"grid":"none";
+  document.getElementById("digest").style.display = v==="board"?"block":"none";
+  if(v!=="board") loadView(v);
+}));
+async function loadView(v){
+  const el=document.getElementById("viewtext");
+  try{
+    const r=await fetch(`/api/${v}`); const j=await r.json();
+    if(v==="todo") el.textContent=j.todo||"(empty)";
+    else if(v==="ledger") el.textContent=(j.ledger||[]).join("\n")||"(empty)";
+    else if(v==="snapshot") el.textContent=j.snapshot||"(empty)";
+    else if(v==="progress"){ const l=await (await fetch("/api/snapshot")).json(); el.textContent=l.snapshot||"(empty)"; }
+  }catch(e){ el.textContent="(could not load "+v+")"; }
+}
 load();
 setInterval(()=>{ if(ENDPOINT) load(); }, 4000);
 </script>

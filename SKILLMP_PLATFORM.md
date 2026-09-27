@@ -31,11 +31,11 @@ A portable, AI-agnostic platform that fuses **intent-aware skill routing**, **pr
    git clone https://github.com/cryptostoner94/agent-brain.git
    for f in agent-brain/tools/*.py; do chmod +x "$f"; ln -sf "$(realpath $f)" /usr/local/bin/$(basename "$f" .py); done
    ```
-   **Launch everything in ONE command** — `bds start` (init + seed + serve):
+   **Launch everything in ONE command** — `bds start` (init + seed + serve all visuals):
    ```bash
    cd <your-project>
-   bds start --intent "MEV resolver profit"   # creates project, seeds pipeline, starts board on :8181
-   # open http://<host>:8181/ on desktop or phone · audit with pmaudit
+   bds start --intent "MEV resolver profit"   # init project, seed pipeline, serve board+all views on a free port (16888)
+   # open http://<host>:16888/ on desktop or phone · audit with pmaudit
    ```
 3. **Always-on** — inject `one-go-orchestrated-pm` + `pm-kanban-todo` + `genuine-audit` (mindset + visible board + not-lie) into the agent's persistent instructions so every session starts with the visible board and honest-execution posture.
 
