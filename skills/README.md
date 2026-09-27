@@ -16,6 +16,10 @@ These are the amalgamated, AI-agnostic skills from the `main` branch. Any AI can
 | [`task-execute`](task-execute/SKILL.md) | End-to-end agent task execution: discover → classify → assign → execute → verify | When running an agent task |
 | [`deep-research`](deep-research/SKILL.md) | Fan-out web research, source verification, cited synthesis | When deep multi-source research is needed |
 | [`h1-respond`](h1-respond/SKILL.md) | Write complete HackerOne report responses and triage comments | When responding to H1 reports |
+| [`pm-kanban-todo`](pm-kanban-todo/SKILL.md) | Visible todo + kanban + milestones + progress + hourly ledger + snapshot (evidence gates) | When planning/tracking/executing a multi-step coding project, any agent |
+| [`one-go-orchestrated-pm`](one-go-orchestrated-pm/SKILL.md) | One-go orchestrated execution fused with PM; coding + non-coding agents; loop/hallucination guards | When orchestrating execution end-to-end with full visible context |
+| [`intent-aware-skill-router`](intent-aware-skill-router/SKILL.md) | OpenRouter-faithful skill router: classify intent → share-of-success → tier/fallbacks → components + auto-seed board | When an agent must route a task to the right skills/intent |
+| [`genuine-audit`](genuine-audit/SKILL.md) | Serious auditing: claims verified, never lie; verdicts SUPPORTED/REFUTED/UNVERIFIED | Before accepting any agent's done/works claim or shipping a deliverable |
 
 ---
 

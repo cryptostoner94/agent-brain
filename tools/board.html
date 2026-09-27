@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMKANBAN — Responsive Board</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#8b949e;
+    --backlog:#6e7681; --ready:#d29922; --progress:#58a6ff; --blocked:#f85149;
+    --qa:#bc8cff; --done:#3fb950;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; padding:0 12px 40px}
+  h1{font-size:20px; margin:18px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  #meta{color:var(--muted); font-size:13px; margin-bottom:16px}
+  .bar-wrap{max-width:480px; margin-bottom:20px}
+  .bar{height:14px; background:#21262d; border-radius:8px; overflow:hidden; border:1px solid var(--line)}
+  .bar > div{height:100%; background:linear-gradient(90deg,#3fb950,#2ea043); width:0%; transition:width .5s}
+  .lbl{display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:4px}
+  /* grid: horizontal lanes on wide, stacked cards on narrow */
+  .board{display:grid; grid-template-columns:repeat(6,1fr); gap:10px; align-items:start}
+  @media (max-width:900px){ .board{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .board{grid-template-columns:1fr} }
+  .lane{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px; min-height:120px}
+  .lane h2{font-size:13px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); padding:4px 6px; display:flex; justify-content:space-between}
+  .count{background:#21262d; border-radius:20px; padding:0 8px; font-size:11px}
+  .card{background:#21262d; border:1px solid var(--line); border-left:4px solid var(--backlog); border-radius:8px; padding:8px; margin:6px 0; font-size:13px}
+  .card .id{font-weight:700; color:var(--muted); font-size:11px; margin-right:6px}
+  .card .own{color:var(--muted); font-size:11px; float:right}
+  .lane[data-lane="READY"] .card{border-left-color:var(--ready)}
+  .lane[data-lane="IN_PROGRESS"] .card{border-left-color:var(--progress)}
+  .lane[data-lane="BLOCKED"] .card{border-left-color:var(--blocked)}
+  .lane[data-lane="QA"] .card{border-left-color:var(--qa)}
+  .lane[data-lane="DONE"] .card{border-left-color:var(--done)}
+  #toast{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:#1f6feb; color:#fff; padding:10px 16px; border-radius:8px; font-size:13px; display:none; box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  .digest{font-size:13px; color:var(--muted); line-height:1.6; margin:14px 0}
+</style>
+</head>
+<body>
+<h1>📋 Intents→Skills Pipeline <span id="project">(loading…)</span></h1>
+<div id="meta"></div>
+<div class="bar-wrap"><div class="bar"><div id="fill"></div></div><div class="lbl"><span id="pct">0%</span><span id="rem"></span></div></div>
+<div class="board" id="board"></div>
+<div id="digest" class="digest"></div>
+<div id="toast"></div>
+<script>
+const ENDPOINT = location.search=== '?static' ? null : '/api/board';
+const LANES=["BACKLOG","READY","IN_PROGRESS","BLOCKED","QA","DONE"];
+const COLOR={BACKLOG:"var(--backlog)",READY:"var(--ready)",IN_PROGRESS:"var(--progress)",BLOCKED:"var(--blocked)",QA:"var(--qa)",DONE:"var(--done)"};
+async function load(){
+  let data=null;
+  if(ENDPOINT){
+    try{ const r=await fetch(ENDPOINT); data=await r.json(); }catch(e){ console.warn(e); data=fallback(); }
+  } else data=fallback();
+  render(data);
+}
+function fallback(){
+  const ctx=window.PMK_STATIC||{cards:[],meta:{project:"(static)",progress:0},milestones:[],ledger:[]};
+  return ctx;
+}
+function render(data){
+  const cards=data.cards||[], meta=data.meta||{}, ms=data.milestones||[];
+  document.getElementById("project").textContent=meta.project||"(unnamed)";
+  const total=cards.length, done=cards.filter(c=>c.lane==="DONE").length;
+  const pct=meta.progress||(Math.round((done/total)*100)||0);
+  document.getElementById("fill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("rem").textContent=done+"/"+total+" done"+(total?" · "+(total-done)+" open":"");
+  document.getElementById("meta").innerHTML="Authority docs: "+(meta.docs||[]).join(", ")||"(none)";
+  const board=document.getElementById("board"); board.innerHTML="";
+  for(const lane of LANES){
+    const col=document.createElement("div"); col.className="lane"; col.dataset.lane=lane;
+    const items=cards.filter(c=>c.lane===lane);
+    col.innerHTML=`<h2>${lane} <span class="count">${items.length}</span></h2>`;
+    items.forEach(c=>{
+      const d=document.createElement("div"); d.className="card";
+      d.innerHTML=`<span class="id">${c.id}</span>${c.title}<span class="own">${c.owner||""}</span>`;
+      col.appendChild(d);
+    });
+    board.appendChild(col);
+  }
+  const digest=document.getElementById("digest");
+  digest.innerHTML="<b>Milestones:</b> "+
+    (ms.length? ms.map(m=>`${m.id} ${m.pct}%`).join(" · "):"(none)")+
+    " &nbsp;·&nbsp; <b>Evidence:</b> "+(meta.evidence||0)+" file(s)";
+}
+function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.style.display="block"; setTimeout(()=>t.style.display="none",1800);}
+load();
+setInterval(()=>{ if(ENDPOINT) load(); }, 4000);
+</script>
+</body>
+</html>
