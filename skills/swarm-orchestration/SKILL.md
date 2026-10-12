@@ -23,12 +23,21 @@ ssh -i ~/.ssh/id_ed25519 -o ConnectTimeout=15 root@161.97.77.153 '<command>'
 
 - Plain `ssh root@161.97.77.153` may fail with "Permission denied" — retry with the explicit key above.
 - Host key is already accepted. Never print secrets, keys, or env values; list key NAMES only.
-- Server inventory (verified 2026-10-11): Docker 29.x; agent CLIs `aider`, `cline`,
-  `openhands`, `hermes`, `codex` in `/usr/local/bin`; hermes harness at `/root/.hermes`
-  (with `bin/browser`, `bin/browser-use`); images include `ollama/ollama`,
-  `ghcr.io/openrouterteam/spawn-openclaw`, `freqtradeorg/freqtrade`.
-- Use Docker for isolation: disposable test envs, openhands runtime, anything that
-  could pollute the host. Prefer existing server agents over installing new ones.
+- Server inventory (verified 2026-10-11): Docker 29.x; 28 agent CLIs — aider, opencode,
+  cline, openhands, claude (Claude Code), grok, junie, codex, openclaw, kilocode, t3,
+  tiny-agents, qodo, taskmarket, coder-studio, agent-canvas, command-code, coderabbit,
+  codeaf, fx, spawn, adal, cua-driver, omp, polygraph (+ hermes host-only, ollama,
+  openai). Full registry: `/root/agent-env/AGENTS.md`.
+- **Two environments, same agents, same keys:**
+  - **ENV 1 — server normal:** run CLIs as root directly. `source /root/agent-env/load.sh`
+    exports the shared `OPENROUTER_API_KEY` (mode 600).
+  - **ENV 2 — docker sandbox** (`/root/beta-sandbox/`, dev/testing only): isolated
+    container with the full curated agent list + Chromium; agents work in `./workspace`
+    (mounted at `/workspace`), never in live project folders.
+    `docker compose up -d` → `docker compose exec sandbox bash`.
+    Scale to parallel swarms: `docker compose up --scale sandbox=3 -d`.
+- Prefer existing server agents over installing new ones. Use Docker for isolation:
+  disposable test envs, heavy multi-swarm execution, anything that could pollute the host.
 
 ## Layer 1 — the 5-agent beta testing protocol
 
