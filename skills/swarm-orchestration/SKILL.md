@@ -23,11 +23,17 @@ ssh -i ~/.ssh/id_ed25519 -o ConnectTimeout=15 root@161.97.77.153 '<command>'
 
 - Plain `ssh root@161.97.77.153` may fail with "Permission denied" — retry with the explicit key above.
 - Host key is already accepted. Never print secrets, keys, or env values; list key NAMES only.
-- Server inventory (verified 2026-10-11): Docker 29.x; 22 agent CLIs — aider, opencode,
-  cline, openhands, claude (Claude Code), junie, codex, openclaw, kilocode, tiny-agents,
-  taskmarket, coder-studio, agent-canvas, command-code, spawn, adal, cua-driver, omp,
-  polygraph (+ hermes host-only, ollama, openai). Removed 2026-10-12: fx, codeaf, grok,
-  t3, qodo, coderabbit. Full registry: `/root/agent-env/AGENTS.md`.
+- Server inventory (verified 2026-10-11): Docker 29.x; 12 agent CLIs — aider, opencode,
+  cline, kilocode, openclaw, codex, claude (Claude Code), openhands, command-code,
+  openai, ollama (+ hermes host-only). Removed 2026-10-12: fx, codeaf, grok, t3, qodo,
+  coderabbit, taskmarket, coder-studio, cua-driver, spawn, adal, omp, polygraph, junie,
+  tiny-agents, agent-canvas. Full registry: `/root/agent-env/AGENTS.md`.
+- **BYOK rule (no exceptions except noted):** every agent uses ONLY the shared
+  `OPENROUTER_API_KEY`. Exceptions: command-code and opencode may use their own
+  subscriptions. Enforcement: `load.sh` (ENV 1) and `/etc/profile.d/byok.sh` (ENV 2)
+  map provider keys onto the OpenRouter key and point base URLs at OpenRouter.
+  No subscription credentials exist in either environment — agents fail closed
+  rather than charging.
 - **Two environments, same agents, same keys:**
   - **ENV 1 — server normal:** run CLIs as root directly. `source /root/agent-env/load.sh`
     exports the shared `OPENROUTER_API_KEY` (mode 600).
