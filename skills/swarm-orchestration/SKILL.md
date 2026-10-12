@@ -23,11 +23,11 @@ ssh -i ~/.ssh/id_ed25519 -o ConnectTimeout=15 root@161.97.77.153 '<command>'
 
 - Plain `ssh root@161.97.77.153` may fail with "Permission denied" — retry with the explicit key above.
 - Host key is already accepted. Never print secrets, keys, or env values; list key NAMES only.
-- Server inventory (verified 2026-10-11): Docker 29.x; 28 agent CLIs — aider, opencode,
-  cline, openhands, claude (Claude Code), grok, junie, codex, openclaw, kilocode, t3,
-  tiny-agents, qodo, taskmarket, coder-studio, agent-canvas, command-code, coderabbit,
-  codeaf, fx, spawn, adal, cua-driver, omp, polygraph (+ hermes host-only, ollama,
-  openai). Full registry: `/root/agent-env/AGENTS.md`.
+- Server inventory (verified 2026-10-11): Docker 29.x; 22 agent CLIs — aider, opencode,
+  cline, openhands, claude (Claude Code), junie, codex, openclaw, kilocode, tiny-agents,
+  taskmarket, coder-studio, agent-canvas, command-code, spawn, adal, cua-driver, omp,
+  polygraph (+ hermes host-only, ollama, openai). Removed 2026-10-12: fx, codeaf, grok,
+  t3, qodo, coderabbit. Full registry: `/root/agent-env/AGENTS.md`.
 - **Two environments, same agents, same keys:**
   - **ENV 1 — server normal:** run CLIs as root directly. `source /root/agent-env/load.sh`
     exports the shared `OPENROUTER_API_KEY` (mode 600).
